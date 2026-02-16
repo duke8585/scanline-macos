@@ -24,7 +24,7 @@ $(APP_BUNDLE): $(SOURCES) Info.plist
 		-e 's/$$(DEVELOPMENT_LANGUAGE)/en/g' \
 		Info.plist > $(APP_BUNDLE)/Contents/Info.plist
 	swiftc $(SWIFTC_FLAGS) -o $(APP_BUNDLE)/Contents/MacOS/$(APP_NAME) $(SOURCES)
-	@codesign --sign - --force --options runtime --entitlements CalendarOverlay.entitlements $(APP_BUNDLE)
+	@codesign --sign - --force --entitlements CalendarOverlay.entitlements $(APP_BUNDLE)
 	@echo "Built $(APP_BUNDLE)"
 
 build-universal: $(SOURCES) Info.plist
@@ -41,7 +41,7 @@ build-universal: $(SOURCES) Info.plist
 	lipo -create -output $(APP_BUNDLE)/Contents/MacOS/$(APP_NAME) \
 		$(BUILD_DIR)/$(APP_NAME)-arm64 $(BUILD_DIR)/$(APP_NAME)-x86_64
 	@rm $(BUILD_DIR)/$(APP_NAME)-arm64 $(BUILD_DIR)/$(APP_NAME)-x86_64
-	@codesign --sign - --force --options runtime --entitlements CalendarOverlay.entitlements $(APP_BUNDLE)
+	@codesign --sign - --force --entitlements CalendarOverlay.entitlements $(APP_BUNDLE)
 	@echo "Built universal $(APP_BUNDLE) ($(VERSION))"
 
 release: build-universal
