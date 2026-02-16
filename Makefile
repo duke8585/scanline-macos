@@ -5,7 +5,13 @@ SOURCES = $(wildcard Sources/*.swift)
 VERSION ?= 0.0.0
 SWIFTC_FLAGS = -parse-as-library -framework SwiftUI -framework EventKit -framework AppKit
 
-.PHONY: build build-universal run run-clean clean generate test release
+LAST_TAG := $(shell git describe --tags --abbrev=0 2>/dev/null || echo v0.0.0)
+LAST_VERSION := $(subst v,,$(LAST_TAG))
+MAJOR := $(word 1,$(subst ., ,$(LAST_VERSION)))
+MINOR := $(word 2,$(subst ., ,$(LAST_VERSION)))
+PATCH := $(word 3,$(subst ., ,$(LAST_VERSION)))
+
+.PHONY: build build-universal run run-clean clean generate test release tag-patch tag-minor tag-major
 
 build: $(APP_BUNDLE)
 
@@ -57,3 +63,15 @@ test:
 
 clean:
 	rm -rf $(BUILD_DIR)
+
+tag-patch:
+	git tag v$(MAJOR).$(MINOR).$(shell echo $$(($(PATCH)+1)))
+	git push origin v$(MAJOR).$(MINOR).$(shell echo $$(($(PATCH)+1)))
+
+tag-minor:
+	git tag v$(MAJOR).$(shell echo $$(($(MINOR)+1))).0
+	git push origin v$(MAJOR).$(shell echo $$(($(MINOR)+1))).0
+
+tag-major:
+	git tag v$(shell echo $$(($(MAJOR)+1))).0.0
+	git push origin v$(shell echo $$(($(MAJOR)+1))).0.0
