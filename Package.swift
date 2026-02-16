@@ -8,12 +8,14 @@ let package = Package(
         .target(
             name: "CalendarOverlay",
             path: "Sources",
-            exclude: ["CalendarOverlayApp.swift"]
+            exclude: ["CalendarOverlayApp.swift"],
+            swiftSettings: [.enableExperimentalFeature("StrictConcurrency=minimal")]
         ),
         .testTarget(
             name: "CalendarOverlayTests",
             dependencies: ["CalendarOverlay"],
-            path: "Tests"
+            path: "Tests",
+            swiftSettings: [.enableExperimentalFeature("StrictConcurrency=minimal")]
         ),
     ]
 )
