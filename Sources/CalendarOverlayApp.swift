@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
     let appState = AppState()
 

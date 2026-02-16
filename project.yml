@@ -28,3 +28,12 @@ targets:
       path: CalendarOverlay.entitlements
       properties:
         com.apple.security.personal-information.calendars: true
+  CalendarOverlayTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources: [Tests]
+    dependencies:
+      - target: CalendarOverlay
+    settings:
+      base:
+        SWIFT_VERSION: "5.9"

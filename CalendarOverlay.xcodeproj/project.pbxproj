@@ -7,23 +7,42 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0072D456206C9ACFEF666116 /* MockCalendarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7BFBB4E578E424583E1ABB9D /* MockCalendarService.swift */; };
 		2F03BE5F90DB96D8592AE8D6 /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B7434D8D6750577ADDCDA9 /* MenuBarView.swift */; };
 		3A6E9CA08B46C18F53C6B8E3 /* OverlayWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F8FECC1188A0E7FF9227ABC /* OverlayWindow.swift */; };
+		4513E0F152172F77805B7F87 /* EventMonitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32BAF425B2F46BDC3FF17A95 /* EventMonitorTests.swift */; };
 		48833D8DFC1B32C01C18CF89 /* CalendarOverlayApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC41BF810C594D03B42C973 /* CalendarOverlayApp.swift */; };
 		4F2F21D5878C826AF9B3D2D3 /* OverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F830055E342C978EA314E026 /* OverlayView.swift */; };
 		81E5F0C639C9DFC655E1406E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7483DCB85337E02B9FF83E3 /* SettingsView.swift */; };
 		AB96BF1A66DAF35DFB1C4262 /* CalendarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D229E268FF4D59F4775FF749 /* CalendarService.swift */; };
+		C5D9686D0AD32230CA00CE5A /* MockOverlayPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898ECBE7719C1D6B116386D2 /* MockOverlayPresenter.swift */; };
 		D68380487961CBE380CB0EA9 /* EventMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE647D993A687922EF2D997C /* EventMonitor.swift */; };
 		F6F6272E05CBB886A24C1A27 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F277765E7B980E9EE5041E9C /* AppState.swift */; };
+		F96AAB77DFC6DB022E301429 /* AppStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E13DD01D8DACD3A887CFCB02 /* AppStateTests.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0CF325439A4275BFE74F40EF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7FBFACD580891054AFFEBE38 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2032EAA808E8015B9BBCE220;
+			remoteInfo = CalendarOverlay;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		1ECBB81CCBE4809F86E6250A /* CalendarOverlay.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CalendarOverlay.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		32BAF425B2F46BDC3FF17A95 /* EventMonitorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMonitorTests.swift; sourceTree = "<group>"; };
 		53B7434D8D6750577ADDCDA9 /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
+		7BFBB4E578E424583E1ABB9D /* MockCalendarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCalendarService.swift; sourceTree = "<group>"; };
+		898ECBE7719C1D6B116386D2 /* MockOverlayPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockOverlayPresenter.swift; sourceTree = "<group>"; };
 		8F8FECC1188A0E7FF9227ABC /* OverlayWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindow.swift; sourceTree = "<group>"; };
 		B7483DCB85337E02B9FF83E3 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		B9C0D2FFD72DCEC4C5ECEBCB /* CalendarOverlayTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalendarOverlayTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE647D993A687922EF2D997C /* EventMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventMonitor.swift; sourceTree = "<group>"; };
 		D229E268FF4D59F4775FF749 /* CalendarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarService.swift; sourceTree = "<group>"; };
+		E13DD01D8DACD3A887CFCB02 /* AppStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateTests.swift; sourceTree = "<group>"; };
 		EEC41BF810C594D03B42C973 /* CalendarOverlayApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarOverlayApp.swift; sourceTree = "<group>"; };
 		F277765E7B980E9EE5041E9C /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		F830055E342C978EA314E026 /* OverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayView.swift; sourceTree = "<group>"; };
@@ -34,14 +53,35 @@
 			isa = PBXGroup;
 			children = (
 				1ECBB81CCBE4809F86E6250A /* CalendarOverlay.app */,
+				B9C0D2FFD72DCEC4C5ECEBCB /* CalendarOverlayTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		9134ED4FAFB09F0CFFF5420B /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				E13DD01D8DACD3A887CFCB02 /* AppStateTests.swift */,
+				32BAF425B2F46BDC3FF17A95 /* EventMonitorTests.swift */,
+				9A2831F782AC5448C643FF04 /* Mocks */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		9A2831F782AC5448C643FF04 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				7BFBB4E578E424583E1ABB9D /* MockCalendarService.swift */,
+				898ECBE7719C1D6B116386D2 /* MockOverlayPresenter.swift */,
+			);
+			path = Mocks;
 			sourceTree = "<group>";
 		};
 		C298283B03C7D61C5E0AD312 = {
 			isa = PBXGroup;
 			children = (
 				D12190851AC4AF88938C3557 /* Sources */,
+				9134ED4FAFB09F0CFFF5420B /* Tests */,
 				5B158F72DD7CABE02E3F9E69 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -81,6 +121,24 @@
 			productReference = 1ECBB81CCBE4809F86E6250A /* CalendarOverlay.app */;
 			productType = "com.apple.product-type.application";
 		};
+		C5E0CCB608F32C9D6BF13314 /* CalendarOverlayTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7302A8201ACBFF7B55A4EADE /* Build configuration list for PBXNativeTarget "CalendarOverlayTests" */;
+			buildPhases = (
+				E5DFD8A9D0F279AA29918C34 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8BFAC24F111A5045BD8966E8 /* PBXTargetDependency */,
+			);
+			name = CalendarOverlayTests;
+			packageProductDependencies = (
+			);
+			productName = CalendarOverlayTests;
+			productReference = B9C0D2FFD72DCEC4C5ECEBCB /* CalendarOverlayTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -105,6 +163,7 @@
 			projectRoot = "";
 			targets = (
 				2032EAA808E8015B9BBCE220 /* CalendarOverlay */,
+				C5E0CCB608F32C9D6BF13314 /* CalendarOverlayTests */,
 			);
 		};
 /* End PBXProject section */
@@ -125,7 +184,26 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E5DFD8A9D0F279AA29918C34 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F96AAB77DFC6DB022E301429 /* AppStateTests.swift in Sources */,
+				4513E0F152172F77805B7F87 /* EventMonitorTests.swift in Sources */,
+				0072D456206C9ACFEF666116 /* MockCalendarService.swift in Sources */,
+				C5D9686D0AD32230CA00CE5A /* MockOverlayPresenter.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		8BFAC24F111A5045BD8966E8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2032EAA808E8015B9BBCE220 /* CalendarOverlay */;
+			targetProxy = 0CF325439A4275BFE74F40EF /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		0F7481E21D725C0826926483 /* Release */ = {
@@ -190,6 +268,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = CalendarOverlay.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_LSUIElement = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -271,6 +350,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = CalendarOverlay.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_LSUIElement = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -283,6 +363,40 @@
 			};
 			name = Release;
 		};
+		B0094260DA837B88B1CE617C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.calendaroverlay.CalendarOverlayTests;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CalendarOverlay.app/Contents/MacOS/CalendarOverlay";
+			};
+			name = Debug;
+		};
+		B61CF4676A3C24F3C926E6CB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.calendaroverlay.CalendarOverlayTests;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CalendarOverlay.app/Contents/MacOS/CalendarOverlay";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -291,6 +405,15 @@
 			buildConfigurations = (
 				4F49638E2226A15466577A20 /* Debug */,
 				A5F0294E7BDA53FA0EF7A2FF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		7302A8201ACBFF7B55A4EADE /* Build configuration list for PBXNativeTarget "CalendarOverlayTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B0094260DA837B88B1CE617C /* Debug */,
+				B61CF4676A3C24F3C926E6CB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

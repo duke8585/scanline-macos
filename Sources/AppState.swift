@@ -10,7 +10,7 @@ struct CalendarEvent: Identifiable {
     let calendarColor: CGColor
 
     init(from ekEvent: EKEvent) {
-        self.id = ekEvent.eventIdentifier
+        self.id = ekEvent.eventIdentifier ?? UUID().uuidString
         self.title = ekEvent.title ?? "Untitled"
         self.startDate = ekEvent.startDate
         self.endDate = ekEvent.endDate
@@ -28,7 +28,12 @@ struct CalendarEvent: Identifiable {
     }
 }
 
-@Observable
+struct SnoozedEvent {
+    let event: CalendarEvent
+    let fireDate: Date
+}
+
+@Observable @MainActor
 final class AppState {
     var selectedCalendarIDs: Set<String> {
         didSet {
@@ -54,28 +59,37 @@ final class AppState {
         didSet { handleOverlayChange() }
     }
     var eventQueue: [CalendarEvent] = []
-    var snoozeQueue: [(event: CalendarEvent, fireDate: Date)] = []
+    var snoozeQueue: [SnoozedEvent] = []
     var permissionGranted: Bool = false
     var firedAlarmKeys: Set<String> = []
-    var refreshTick: Int = 0
+    var cachedUpcomingEvents: [CalendarEvent] = []
+    var cachedCalendars: [(String, [EKCalendar])] = []
 
-    let calendarService = CalendarService()
+    let calendarService: any CalendarServiceProtocol
     private(set) var eventMonitor: EventMonitor?
-    private let overlayController = OverlayWindowController()
+    private let overlayController: any OverlayPresenting
 
-    init() {
+    // Note: didSet observers don't fire during init, so direct assignment is safe here.
+    init(calendarService: any CalendarServiceProtocol = CalendarService(),
+         overlayPresenter: any OverlayPresenting = OverlayWindowController()) {
+        UserDefaults.standard.register(defaults: [
+            "reminderBeforeMinutes": 5,
+            "reminderAtStartEnabled": true,
+            "reminderAfterMinutes": 5,
+        ])
+
+        self.calendarService = calendarService
+        self.overlayController = overlayPresenter
+
         let saved = UserDefaults.standard.stringArray(forKey: "selectedCalendarIDs") ?? []
         self.selectedCalendarIDs = Set(saved)
 
         let defaults = UserDefaults.standard
         self.reminderBeforeEnabled = defaults.bool(forKey: "reminderBeforeEnabled")
-        self.reminderBeforeMinutes = defaults.object(forKey: "reminderBeforeMinutes") == nil
-            ? 5 : defaults.integer(forKey: "reminderBeforeMinutes")
-        self.reminderAtStartEnabled = defaults.object(forKey: "reminderAtStartEnabled") == nil
-            ? true : defaults.bool(forKey: "reminderAtStartEnabled")
+        self.reminderBeforeMinutes = defaults.integer(forKey: "reminderBeforeMinutes")
+        self.reminderAtStartEnabled = defaults.bool(forKey: "reminderAtStartEnabled")
         self.reminderAfterEnabled = defaults.bool(forKey: "reminderAfterEnabled")
-        self.reminderAfterMinutes = defaults.object(forKey: "reminderAfterMinutes") == nil
-            ? 5 : defaults.integer(forKey: "reminderAfterMinutes")
+        self.reminderAfterMinutes = defaults.integer(forKey: "reminderAfterMinutes")
     }
 
     func setup() {
@@ -108,6 +122,8 @@ final class AppState {
     }
 
     func enqueueEvent(_ event: CalendarEvent) {
+        guard activeOverlayEvent?.id != event.id,
+              !eventQueue.contains(where: { $0.id == event.id }) else { return }
         if activeOverlayEvent == nil {
             activeOverlayEvent = event
         } else {
@@ -123,7 +139,7 @@ final class AppState {
     func snooze(minutes: Int) {
         if let event = activeOverlayEvent {
             let fireDate = Date().addingTimeInterval(TimeInterval(minutes * 60))
-            snoozeQueue.append((event: event, fireDate: fireDate))
+            snoozeQueue.append(SnoozedEvent(event: event, fireDate: fireDate))
             eventMonitor?.reschedule()
         }
         activeOverlayEvent = nil
@@ -133,6 +149,30 @@ final class AppState {
     private func showNextQueued() {
         if !eventQueue.isEmpty {
             activeOverlayEvent = eventQueue.removeFirst()
+        }
+    }
+
+    func refreshCaches() {
+        guard permissionGranted else { return }
+        let now = Date()
+        let range = DateInterval(start: now, duration: 24 * 60 * 60)
+        if !selectedCalendarIDs.isEmpty {
+            let events = calendarService.events(for: selectedCalendarIDs, in: range)
+            cachedUpcomingEvents = events
+                .filter { $0.startDate > now }
+                .sorted { $0.startDate < $1.startDate }
+        } else {
+            cachedUpcomingEvents = []
+        }
+        let calendars = calendarService.allCalendars()
+        let grouped = Dictionary(grouping: calendars) { $0.source.title }
+        cachedCalendars = grouped.sorted { $0.key < $1.key }
+    }
+
+    func pruneFiredAlarmKeys(currentEvents: [CalendarEvent]) {
+        let validIDs = Set(currentEvents.map(\.id))
+        firedAlarmKeys = firedAlarmKeys.filter { key in
+            validIDs.contains(where: { key.hasPrefix($0) })
         }
     }
 

@@ -12,9 +12,7 @@ struct SettingsView: View {
     }()
 
     private var calendarsBySource: [(String, [EKCalendar])] {
-        let calendars = appState.calendarService.allCalendars()
-        let grouped = Dictionary(grouping: calendars) { $0.source.title }
-        return grouped.sorted { $0.key < $1.key }
+        appState.cachedCalendars
     }
 
     var body: some View {
@@ -104,7 +102,6 @@ struct SettingsView: View {
 
                 Section(header: Text("Debug")) {
                     Button("Refresh") { appState.syncNow() }
-                    let _ = appState.refreshTick
                     let entries: [(id: String, title: String, tag: String, tagColor: Color, fireDate: Date)] = {
                         let fires = (appState.eventMonitor?.scheduledFires ?? []).map {
                             let tag = $0.key.components(separatedBy: "_").last ?? ""
@@ -113,7 +110,7 @@ struct SettingsView: View {
                             case "after": .blue
                             default: .secondary
                             }
-                            return (id: $0.key, title: $0.event.title ?? "Untitled",
+                            return (id: $0.key, title: $0.event.title,
                                     tag: tag, tagColor: color, fireDate: $0.fireDate)
                         }
                         let snoozes = appState.snoozeQueue.enumerated().map { i, s in
