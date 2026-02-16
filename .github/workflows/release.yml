@@ -1,0 +1,29 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run tests
+        run: make test
+
+      - name: Build universal release
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          make release VERSION=$VERSION
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build/CalendarOverlay-*.zip
+          generate_release_notes: true
