@@ -1,6 +1,6 @@
 # CalendarOverlay
 
-macOS menu bar app that shows full-screen overlays for calendar events. See [DESIGN.md](DESIGN.md) for full spec, UX, and architecture.
+macOS menu bar app that shows full-screen overlays for calendar events. See [DESIGN.md](docs/DESIGN.md) for full spec, UX, and architecture.
 
 ## Stack
 

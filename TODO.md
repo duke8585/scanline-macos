@@ -1,8 +1,0 @@
-- [x] repreated snooze 1min works
-- [x] polling faster, still delay of 10s or so w.r.t. system clock. should it not sync, store the timetable internally and fire off according to system clock?
-- [x] settings not working
-- [x] multiple events, how to handle? tested: in in parallel, only one fired
-- [x] reminder: via settings, standard of x minutes, optionally y minutes later.
-- [x] nice tv style zap in out animation
-- [x] custom snooze for when clicked selector with 1,2,3,5,10,30,1h,2h,4h,12h,24h selector.
-- [x] 12/24h display options - via locale
