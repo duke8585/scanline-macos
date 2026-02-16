@@ -24,15 +24,15 @@ A lightweight macOS menu bar app that:
 
 ### 3.2 Normal Operation
 - App runs silently in the menu bar
-- Polls selected calendars every ~15 seconds
-- When an event's alarm time arrives → full-screen dark overlay appears
+- Refreshes calendar data every 60 seconds, schedules precise timers for each alarm
+- When an event's alarm time arrives → full-screen dark overlay appears instantly
 - Overlay shows: event title, time, calendar name/color
 - User picks: **Dismiss**, **Snooze 1 min**, or **Snooze 5 min**
 - Overlay disappears immediately on action
 - Snoozed events re-trigger the overlay after the snooze period
 
 ### 3.3 Menu Bar Dropdown
-- Shows next upcoming event (from selected calendars)
+- Shows next 2 upcoming events (from selected calendars)
 - "No calendars selected" hint if none are toggled
 - Access to Settings
 - Quit button
@@ -74,14 +74,17 @@ A lightweight macOS menu bar app that:
   - Alarm fire time = `event.startDate.addingTimeInterval(alarm.relativeOffset)`
 
 **EventMonitor** (alarm detection)
-- `Timer` fires every 15 seconds
-- Each tick:
+- Refresh timer fires every 60 seconds to pick up calendar changes
+- On each refresh:
   1. Fetch events from selected calendars for next 24 hours
   2. For each event, compute alarm fire times
-  3. If alarm fire time is in the past and within the last 30 seconds → trigger
-  4. Check snooze queue for expired snoozes → trigger
+  3. If alarm fire time is in the past and within the last 60 seconds → fire immediately
+  4. Future fire times → stored in a sorted timetable
+  5. Check snooze queue for expired snoozes → fire immediately
+- Schedules a precise single-shot timer for the next fire time (alarm or snooze, whichever is earlier)
+- When the timer fires → triggers the event, reschedules for the next one
 - Tracks fired alarms in `Set<String>` using `"\(event.eventIdentifier)_\(alarm.relativeOffset)"` to prevent duplicate alerts
-- When triggered: sets `appState.activeOverlayEvent`
+- When triggered: enqueues event via `appState.enqueueEvent()`
 
 **OverlayWindow** (AppKit window controller)
 - Creates borderless `NSWindow`
@@ -119,10 +122,10 @@ EventKit (system calendars)
 CalendarService ──fetches──▶ [EKEvent]
     │
     ▼
-EventMonitor (15s timer)
+EventMonitor (60s refresh + precise fire timers)
     │ alarm due?
     ▼
-AppState.activeOverlayEvent = event
+AppState.enqueueEvent(event)
     │
     ▼
 OverlayWindow ──shows──▶ OverlayView
@@ -142,7 +145,7 @@ CalendarOverlay/
 │   ├── CalendarOverlayApp.swift       # @main, MenuBarExtra
 │   ├── AppState.swift                 # @Observable shared state
 │   ├── CalendarService.swift          # EventKit wrapper
-│   ├── EventMonitor.swift             # Polling + alarm detection
+│   ├── EventMonitor.swift             # Calendar refresh + precise alarm scheduling
 │   ├── OverlayWindow.swift            # NSWindow at screenSaver level
 │   ├── OverlayView.swift              # Overlay SwiftUI view
 │   ├── SettingsView.swift             # Calendar selection
@@ -167,7 +170,7 @@ CalendarOverlay/
 | Multiple alarms on same event | Each alarm triggers independently |
 | Multiple events alarm at same time | Queue them — show one at a time |
 | Event deleted after alarm cached | Check event still exists before showing overlay |
-| App launched after alarm time passed | Don't retroactively fire — only alarms whose time falls within a poll window |
+| App launched after alarm time passed | Fire alarms missed within the last 60 seconds; older ones are skipped |
 | Snooze + original alarm overlap | Deduplicate by tracking fired combos |
 | Screen locked | Overlay shows on unlock (window is already up) |
 

@@ -1,0 +1,30 @@
+name: CalendarOverlay
+options:
+  bundleIdPrefix: com.calendaroverlay
+  deploymentTarget:
+    macOS: "14.0"
+  xcodeVersion: "15.0"
+  generateEmptyDirectories: true
+
+targets:
+  CalendarOverlay:
+    type: application
+    platform: macOS
+    sources:
+      - Sources
+    resources:
+      - Resources
+    info:
+      path: Info.plist
+      properties:
+        NSCalendarsUsageDescription: CalendarOverlay needs calendar access to show event notifications.
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.calendaroverlay.app
+        INFOPLIST_KEY_LSUIElement: true
+        SWIFT_VERSION: "5.9"
+        MACOSX_DEPLOYMENT_TARGET: "14.0"
+    entitlements:
+      path: CalendarOverlay.entitlements
+      properties:
+        com.apple.security.personal-information.calendars: true
