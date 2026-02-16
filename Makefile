@@ -1,4 +1,4 @@
-APP_NAME = CalendarOverlay
+APP_NAME = Scanline
 BUILD_DIR = build
 APP_BUNDLE = $(BUILD_DIR)/$(APP_NAME).app
 SOURCES = $(wildcard Sources/*.swift)
@@ -19,7 +19,7 @@ $(APP_BUNDLE): $(SOURCES) Info.plist
 	@mkdir -p $(APP_BUNDLE)/Contents/MacOS
 	@mkdir -p $(APP_BUNDLE)/Contents/Resources
 	@sed -e 's/$$(EXECUTABLE_NAME)/$(APP_NAME)/g' \
-		-e 's/$$(PRODUCT_BUNDLE_IDENTIFIER)/com.calendaroverlay.app/g' \
+		-e 's/$$(PRODUCT_BUNDLE_IDENTIFIER)/com.scanline.app/g' \
 		-e 's/$$(PRODUCT_NAME)/$(APP_NAME)/g' \
 		-e 's/$$(DEVELOPMENT_LANGUAGE)/en/g' \
 		Info.plist > $(APP_BUNDLE)/Contents/Info.plist
@@ -31,7 +31,7 @@ build-universal: $(SOURCES) Info.plist
 	@mkdir -p $(APP_BUNDLE)/Contents/MacOS
 	@mkdir -p $(APP_BUNDLE)/Contents/Resources
 	@sed -e 's/$$(EXECUTABLE_NAME)/$(APP_NAME)/g' \
-		-e 's/$$(PRODUCT_BUNDLE_IDENTIFIER)/com.calendaroverlay.app/g' \
+		-e 's/$$(PRODUCT_BUNDLE_IDENTIFIER)/com.scanline.app/g' \
 		-e 's/$$(PRODUCT_NAME)/$(APP_NAME)/g' \
 		-e 's/$$(DEVELOPMENT_LANGUAGE)/en/g' \
 		-e 's/1\.0/$(VERSION)/g' \
@@ -52,7 +52,7 @@ run: build
 	@open $(APP_BUNDLE)
 
 run-clean: build
-	@defaults delete com.calendaroverlay.app 2>/dev/null || true
+	@defaults delete com.scanline.app 2>/dev/null || true
 	@open $(APP_BUNDLE)
 
 generate:
