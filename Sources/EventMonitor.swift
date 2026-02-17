@@ -34,6 +34,8 @@ final class EventMonitor {
 
         fireExpiredSnoozes(appState: appState)
 
+        appState.refreshCaches()
+
         guard !appState.selectedCalendarIDs.isEmpty else { return }
         let range = DateInterval(start: now, duration: 24 * 60 * 60)
         let events = calendarService.events(for: appState.selectedCalendarIDs, in: range)
