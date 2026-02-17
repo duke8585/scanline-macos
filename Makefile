@@ -64,13 +64,16 @@ clean:
 	rm -rf $(BUILD_DIR)
 
 tag-patch:
+	git push
 	git tag v$(MAJOR).$(MINOR).$(shell echo $$(($(PATCH)+1)))
 	git push origin v$(MAJOR).$(MINOR).$(shell echo $$(($(PATCH)+1)))
 
 tag-minor:
+	git push
 	git tag v$(MAJOR).$(shell echo $$(($(MINOR)+1))).0
 	git push origin v$(MAJOR).$(shell echo $$(($(MINOR)+1))).0
 
 tag-major:
+	git push
 	git tag v$(shell echo $$(($(MAJOR)+1))).0.0
 	git push origin v$(shell echo $$(($(MAJOR)+1))).0.0
