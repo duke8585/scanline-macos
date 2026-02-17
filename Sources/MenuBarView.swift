@@ -47,9 +47,22 @@ struct MenuBarView: View {
 
         Divider()
 
-        Button("Quit") {
+        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "dev"
+        Button("GitHub") {
+            if let url = URL(string: "https://github.com/duke8585/scanline-macos") {
+                NSWorkspace.shared.open(url)
+            }
+        }
+
+        Button("Quit Scanline") {
             NSApplication.shared.terminate(nil)
         }
         .keyboardShortcut("q")
+
+        Divider()
+
+        Text("v\(version)")
+            .foregroundStyle(.secondary)
+            .font(.caption)
     }
 }

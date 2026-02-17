@@ -15,7 +15,7 @@ PATCH := $(word 3,$(subst ., ,$(LAST_VERSION)))
 
 build: $(APP_BUNDLE)
 
-$(APP_BUNDLE): $(SOURCES) Info.plist
+define PREPARE_BUNDLE
 	@mkdir -p $(APP_BUNDLE)/Contents/MacOS
 	@mkdir -p $(APP_BUNDLE)/Contents/Resources
 	@sed -e 's/$$(EXECUTABLE_NAME)/$(APP_NAME)/g' \
@@ -23,19 +23,18 @@ $(APP_BUNDLE): $(SOURCES) Info.plist
 		-e 's/$$(PRODUCT_NAME)/$(APP_NAME)/g' \
 		-e 's/$$(DEVELOPMENT_LANGUAGE)/en/g' \
 		Info.plist > $(APP_BUNDLE)/Contents/Info.plist
+	@/usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $(1)" $(APP_BUNDLE)/Contents/Info.plist
+	@cp Resources/AppIcon.icns $(APP_BUNDLE)/Contents/Resources/AppIcon.icns
+endef
+
+$(APP_BUNDLE): $(SOURCES) Info.plist
+	$(call PREPARE_BUNDLE,$(LAST_VERSION))
 	swiftc $(SWIFTC_FLAGS) -o $(APP_BUNDLE)/Contents/MacOS/$(APP_NAME) $(SOURCES)
 	@codesign --sign - --force --entitlements CalendarOverlay.entitlements $(APP_BUNDLE)
-	@echo "Built $(APP_BUNDLE)"
+	@echo "Built $(APP_BUNDLE) ($(LAST_VERSION))"
 
 build-universal: $(SOURCES) Info.plist
-	@mkdir -p $(APP_BUNDLE)/Contents/MacOS
-	@mkdir -p $(APP_BUNDLE)/Contents/Resources
-	@sed -e 's/$$(EXECUTABLE_NAME)/$(APP_NAME)/g' \
-		-e 's/$$(PRODUCT_BUNDLE_IDENTIFIER)/com.scanline.app/g' \
-		-e 's/$$(PRODUCT_NAME)/$(APP_NAME)/g' \
-		-e 's/$$(DEVELOPMENT_LANGUAGE)/en/g' \
-		-e 's/1\.0/$(VERSION)/g' \
-		Info.plist > $(APP_BUNDLE)/Contents/Info.plist
+	$(call PREPARE_BUNDLE,$(VERSION))
 	swiftc $(SWIFTC_FLAGS) -target arm64-apple-macosx14.0 -o $(BUILD_DIR)/$(APP_NAME)-arm64 $(SOURCES)
 	swiftc $(SWIFTC_FLAGS) -target x86_64-apple-macosx14.0 -o $(BUILD_DIR)/$(APP_NAME)-x86_64 $(SOURCES)
 	lipo -create -output $(APP_BUNDLE)/Contents/MacOS/$(APP_NAME) \
