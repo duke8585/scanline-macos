@@ -8,9 +8,44 @@ protocol OverlayPresenting {
 
 final class OverlayWindowController: OverlayPresenting {
     private var windows: [NSWindow] = []
+    private var keyMonitor: Any?
+    private var keyState = OverlayKeyState()
 
     func show(event: CalendarEvent, onDismiss: @escaping () -> Void, onSnooze: @escaping (Int) -> Void) {
         close()
+
+        keyState = OverlayKeyState()
+
+        keyMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak self] nsEvent in
+            guard let self else { return nsEvent }
+            // Don't intercept Cmd shortcuts (Cmd+Q, etc.)
+            if nsEvent.modifierFlags.contains(.command) { return nsEvent }
+
+            // Escape
+            if nsEvent.keyCode == 53 {
+                onDismiss()
+                return nil
+            }
+
+            guard let chars = nsEvent.characters?.lowercased() else { return nil }
+
+            if chars == "d" {
+                onDismiss()
+                return nil
+            }
+            if chars == "s" {
+                self.keyState.showSnoozeOptions.toggle()
+                return nil
+            }
+            if self.keyState.showSnoozeOptions,
+               let choice = SnoozeChoice.all.first(where: { $0.key == chars }) {
+                onSnooze(choice.getMinutes())
+                return nil
+            }
+
+            // Consume all other keys to prevent error beep
+            return nil
+        }
 
         for screen in NSScreen.screens {
             let isPrimary = (screen == NSScreen.main)
@@ -36,7 +71,8 @@ final class OverlayWindowController: OverlayPresenting {
             let overlayView = OverlayView(
                 event: event,
                 onDismiss: isPrimary ? onDismiss : nil,
-                onSnooze: isPrimary ? onSnooze : nil
+                onSnooze: isPrimary ? onSnooze : nil,
+                keyState: keyState
             )
             let hostingView = NSHostingView(rootView: overlayView)
             hostingView.frame = screen.frame
@@ -50,6 +86,10 @@ final class OverlayWindowController: OverlayPresenting {
     }
 
     func close() {
+        if let monitor = keyMonitor {
+            NSEvent.removeMonitor(monitor)
+            keyMonitor = nil
+        }
         let windowsToClose = windows
         windows.removeAll()
         for window in windowsToClose {

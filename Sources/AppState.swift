@@ -8,6 +8,7 @@ struct CalendarEvent: Identifiable {
     let endDate: Date
     let calendarTitle: String
     let calendarColor: CGColor
+    let notes: String?
 
     init(from ekEvent: EKEvent) {
         self.id = ekEvent.eventIdentifier ?? UUID().uuidString
@@ -16,15 +17,17 @@ struct CalendarEvent: Identifiable {
         self.endDate = ekEvent.endDate
         self.calendarTitle = ekEvent.calendar.title
         self.calendarColor = ekEvent.calendar.cgColor
+        self.notes = ekEvent.notes
     }
 
-    init(id: String, title: String, startDate: Date, endDate: Date, calendarTitle: String, calendarColor: CGColor) {
+    init(id: String, title: String, startDate: Date, endDate: Date, calendarTitle: String, calendarColor: CGColor, notes: String? = nil) {
         self.id = id
         self.title = title
         self.startDate = startDate
         self.endDate = endDate
         self.calendarTitle = calendarTitle
         self.calendarColor = calendarColor
+        self.notes = notes
     }
 }
 
@@ -116,7 +119,8 @@ final class AppState {
             startDate: Date(),
             endDate: Date().addingTimeInterval(3600),
             calendarTitle: "Test Calendar",
-            calendarColor: CGColor(red: 0.3, green: 0.5, blue: 1.0, alpha: 1.0)
+            calendarColor: CGColor(red: 0.3, green: 0.5, blue: 1.0, alpha: 1.0),
+            notes: "This is a sample meeting description to preview the overlay layout. It may span multiple lines depending on the content length."
         )
         enqueueEvent(event)
     }

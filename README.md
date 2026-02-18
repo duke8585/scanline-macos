@@ -14,6 +14,10 @@
 ---
 
 <p align="center">
+  <img src="docs/preview.png" width="1000" alt="Scanline overlay preview">
+</p>
+
+<p align="center">
   <a href="https://youtu.be/GSsjef31SE0">
     <img src="https://img.shields.io/badge/▶_Demo-CRT_overlay_in_action-black?style=for-the-badge" alt="Demo video">
   </a>
@@ -22,7 +26,10 @@
 ## Features
 
 - **Full-screen overlay** - unmissable event alerts that cover all screens, above everything including full-screen apps
-- **Snooze & dismiss** - snooze for 1 or 5 minutes, or dismiss instantly
+- **Live clock** - HH:mm:ss clock with CRT scanline effect in the top-right corner
+- **Event details** - shows title, time range, calendar, and description (up to 5 lines)
+- **Keyboard shortcuts** - `d` to dismiss, `s` to snooze, then `1`-`0` to pick a duration
+- **Flexible snooze** - 1/5/10/15/30 min, 1/2/4 hours, or tomorrow at 9:00/13:00
 - **Menu bar app** - lives quietly in your menu bar, no dock icon
 - **Multi-calendar support** - pick which calendars to monitor (any calendar synced to macOS Calendar - Google, iCloud, Exchange, etc.)
 - **Smart alarm detection** - triggers on both explicit alarms and event start times
