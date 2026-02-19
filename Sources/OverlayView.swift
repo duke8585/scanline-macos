@@ -1,8 +1,14 @@
 import SwiftUI
 
+enum OverlayPendingAction: Equatable {
+    case dismiss
+    case snooze(Int)
+}
+
 @Observable
 final class OverlayKeyState {
     var showSnoozeOptions = false
+    var pendingAction: OverlayPendingAction?
 }
 
 struct SnoozeChoice {
@@ -158,14 +164,23 @@ struct OverlayView: View {
         .ignoresSafeArea()
         .scaleEffect(x: scaleX, y: scaleY)
         .onAppear {
-            withAnimation(.easeOut(duration: 0.15)) {
+            withAnimation(.easeOut(duration: 0.225)) {
                 scaleX = 1.0
                 flashOpacity = 0.7
             } completion: {
-                withAnimation(.easeOut(duration: 0.2)) {
+                withAnimation(.easeOut(duration: 0.3)) {
                     scaleY = 1.0
                     flashOpacity = 0.0
                 }
+            }
+        }
+        .onChange(of: keyState.pendingAction) { _, action in
+            guard let action, let onDismiss, let onSnooze else { return }
+            switch action {
+            case .dismiss:
+                animateOut { onDismiss() }
+            case .snooze(let minutes):
+                animateOut { onSnooze(minutes) }
             }
         }
     }
@@ -205,11 +220,11 @@ struct OverlayView: View {
     private func animateOut(_ completion: @escaping () -> Void) {
         guard !isAnimatingOut else { return }
         isAnimatingOut = true
-        withAnimation(.easeIn(duration: 0.2)) {
+        withAnimation(.easeIn(duration: 0.3)) {
             scaleY = 0.003
             flashOpacity = 0.7
         } completion: {
-            withAnimation(.easeIn(duration: 0.15)) {
+            withAnimation(.easeIn(duration: 0.225)) {
                 scaleX = 0.003
                 flashOpacity = 0.0
             } completion: {

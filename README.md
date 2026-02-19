@@ -62,6 +62,10 @@ Scanline monitors your system calendars via EventKit and throws a full-screen CR
 
 On first launch, grant calendar access when prompted. Open Settings from the menu bar to pick which calendars to monitor.
 
+### Keyboard shortcuts without clicking
+
+For keyboard shortcuts (`d`, `s`, etc.) to work immediately when the overlay appears - without clicking it first - Scanline needs Input Monitoring permissions. Go to **System Settings > Privacy & Security > Input Monitoring** and add Scanline. Without this, you'll need to click the overlay once before hotkeys respond.
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md).
