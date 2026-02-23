@@ -18,7 +18,7 @@
 </p>
 
 <p align="center">
-  <a href="https://youtu.be/GSsjef31SE0">
+  <a href="https://www.youtube.com/watch?v=evFfNdNE1CM">
     <img src="https://img.shields.io/badge/▶_Demo-CRT_overlay_in_action-black?style=for-the-badge" alt="Demo video">
   </a>
 </p>
