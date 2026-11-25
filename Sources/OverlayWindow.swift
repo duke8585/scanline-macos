@@ -40,7 +40,7 @@ final class OverlayWindowController: OverlayPresenting {
         NSApp.setActivationPolicy(.regular)
 
         for screen in NSScreen.screens {
-            let isPrimary = (screen == NSScreen.main)
+            let isPrimary = (screen == NSScreen.screens.first)
             let window = KeyableWindow(
                 contentRect: screen.frame,
                 styleMask: .borderless,
@@ -67,7 +67,7 @@ final class OverlayWindowController: OverlayPresenting {
                 keyState: keyState
             )
             let hostingView = NSHostingView(rootView: overlayView)
-            hostingView.frame = screen.frame
+            hostingView.frame = blurView.bounds
             hostingView.autoresizingMask = [.width, .height]
 
             blurView.addSubview(hostingView)
